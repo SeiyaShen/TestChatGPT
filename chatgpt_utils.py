@@ -4,7 +4,6 @@ import openai
 import requests
 import sys
 from num2words import num2words
-import pandas as pd
 import numpy as np
 from openai.embeddings_utils import get_embedding, cosine_similarity
 import tiktoken
