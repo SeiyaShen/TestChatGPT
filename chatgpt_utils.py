@@ -1,7 +1,6 @@
 # embedding_utils.py
 
 import openai
-import re
 import requests
 import sys
 from num2words import num2words
@@ -68,14 +67,4 @@ def get_answer( question ):
 #     norm_b = np.linalg.norm(b)
 #     return dot_product / (norm_a * norm_b)
 
-# s is input text
-def normalize_text(s, sep_token = " \n "):
-    s = re.sub(r'\s+',  ' ', s).strip()
-    s = re.sub(r". ,","",s)
-    # remove all instances of multiple spaces
-    s = s.replace("..",".")
-    s = s.replace(". .",".")
-    s = s.replace("\n", "")
-    s = s.strip()
-    
-    return s
+
