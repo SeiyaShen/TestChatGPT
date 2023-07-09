@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #chatbox {
+            width: calc(100% - 50px);
+            height: 400px;
+            border: 1px solid black;
+            overflow-y: scroll;
+            padding: 10px;
+        }
+
+        .bubble {
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 5px;
+            display: inline-block;
+            max-width: 80%;
+        }
+
+        .question {
+            background-color: #ADD8E6;
+            text-align: right;
+            float: right;
+            clear: both;
+        }
+
+        .answer {
+            background-color: #F0E68C;
+            float: left;
+            clear: both;
+        }
+
+        .loading {
+            text-align: left;
+            float: left;
+            clear: both;
+            font-style: italic;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="chatbox"></div>
+    <form id="chat-form">
+        <input type="text" id="question" placeholder="请输入问题">
+        <button type="submit">发送</button>
+    </form>
+    <script>
+        $("#chat-form").on("submit", function(event) {
+            event.preventDefault();
+            const question = $("#question").val();
+            if (question.trim() === "") return;
+            $("#chatbox").append(`<div class="bubble question">${question}</div>`);
+            $("#question").val("");
+
+            // 修改：添加加载提示
+            $("#chatbox").append(`<div class="loading" id="loading">...</div>`);
+            $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+
+            $.ajax({
+                type: "POST",
+                url: "/ask",
+                data: { question: question },
+                success: function(data) {
+                    // 修改：移除加载提示
+                    $("#loading").remove();
+                    
+                    $("#chatbox").append(`<div class="bubble answer">${data.answer}</div>`);
+                    $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
